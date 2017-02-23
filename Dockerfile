@@ -2,11 +2,13 @@
 FROM alpine
 MAINTAINER Sebastian Krohn <seb@gaia.sunn.de>
 
+ADD https://raw.githubusercontent.com/tests-always-included/mo/master/mo /bin/mo
 RUN apk upgrade --update && \
-		apk add openrc dcron && \
+		apk add openrc dcron bash && \
 		rc-update add dcron default && \
 		echo 'null::respawn:/sbin/syslogd -n -S -D -O /proc/1/fd/1' >> /etc/inittab && \
-		rm -fr /tmp/* /var/cache/apk/*
+		rm -fr /tmp/* /var/cache/apk/* && \
+		chmod +x /bin/mo
 
 # many thanks to github.com/neeravkumar/dockerfiles
 WORKDIR /etc/init.d
